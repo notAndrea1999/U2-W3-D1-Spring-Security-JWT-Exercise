@@ -25,12 +25,12 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping
+    @PostMapping("/login")
     public SeccessfullLoginDTO login(@RequestBody UserLoginDTO userLogin) {
         return new SeccessfullLoginDTO(authService.authUser(userLogin));
     }
 
-    @PostMapping
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     User saveUser(@RequestBody @Validated NewUserDTO userDTO, BindingResult validation) {
         if (validation.hasErrors()) {

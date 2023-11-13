@@ -18,7 +18,7 @@ public class AuthService {
     public String authUser(UserLoginDTO userLogin) {
 
         User newUser = userService.findByEmail(userLogin.email());
-        if (newUser.getPassword().equals(userLogin.email())) {
+        if (newUser.getPassword().equals(userLogin.password())) {
             return jwtTools.createToken(newUser);
         } else {
             throw new UnauthorizedException("Credenziali non valide");

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class AuthFilter extends OncePerRequestFilter {
         } else {
             // Estraggo il token da Auth Header
             String token = authHeader.substring(7);
-            System.out.println(token);
+            System.out.println("IL TOKEN -->" + token);
             jwtTools.verifyToken(token);
 
             //Estraggo user id dal Token
@@ -49,5 +50,10 @@ public class AuthFilter extends OncePerRequestFilter {
             //Procedere verso il prossimo blocco della filter chain
             filterChain.doFilter(request, response);
         }
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return new AntPathMatcher().match("/auth/**", request.getServletPath());
     }
 }

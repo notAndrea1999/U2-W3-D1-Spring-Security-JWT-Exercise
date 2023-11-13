@@ -40,6 +40,7 @@ public class UserService {
         newUser.setUsername(userDTO.username());
         newUser.setFirstName(userDTO.firstName());
         newUser.setLastName(userDTO.lastName());
+        newUser.setPassword(userDTO.password());
         newUser.setEmail(userDTO.email());
         return userRepo.save(newUser);
     }
