@@ -26,6 +26,7 @@ public class User {
     private String email;
     @Column(name = "avatar_url")
     private String avatar;
+    private String password;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<Device> deviceSet;

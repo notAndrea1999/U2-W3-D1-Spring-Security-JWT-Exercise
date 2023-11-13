@@ -5,14 +5,11 @@ import andreademasi.exceptions.BadRequestException;
 import andreademasi.exceptions.NotFoundException;
 import andreademasi.payloads.users.NewUserDTO;
 import andreademasi.repositories.UserRepository;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -20,9 +17,6 @@ import java.io.IOException;
 public class UserService {
     @Autowired
     private UserRepository userRepo;
-
-    @Autowired
-    private Cloudinary cloudinary;
 
     public User findUserById(long id) {
         return userRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -64,10 +58,9 @@ public class UserService {
         userRepo.delete(foundUser);
     }
 
-    public User uploadAvatar(MultipartFile file, long id) throws IOException {
-        User foundUser = this.findUserById(id);
-        String cloudUrl = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
-        foundUser.setAvatar(cloudUrl);
-        return userRepo.save(foundUser);
+
+    public User findByEmail(String email) {
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User con email " + email + " non trovato!"));
     }
 }
